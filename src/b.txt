@@ -1,0 +1,10 @@
+/** this is a comment line in the sample program **/
+INT f2(INT x, INT y ) 
+BEGIN 
+	INT z := 0;
+	WHILE (z <= x*x - y*y)
+	BEGIN
+		z := z + 1;
+	END
+	RETURN z; 
+END
