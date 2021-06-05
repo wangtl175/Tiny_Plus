@@ -107,6 +107,8 @@ StringExpression -> string
 
 ![30892EA765B1A77BA624F3F25963D3D1](The%20Tiny%20Plus%20Language%20Definition.assets/30892EA765B1A77BA624F3F25963D3D1.png)
 
+已经过时了，具体参考实验报告里
+
 在BoolExpression的分析函数中，需要根据BoolFactor的分析函数判断这个是什么表达式，即不一定就是BoolExpression
 
 ## Sample program
@@ -130,4 +132,6 @@ BEGIN
 	WRITE (z, "A4.output"); 
 END
 ```
+
+## 中间代码生成
 

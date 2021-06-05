@@ -1,6 +1,7 @@
 #include"exceptions.h"
 
 #include<cstdio>
+#include <cstring>
 
 IOException::IOException(const string &fileName) {
     msg = new char[fileName.size() + 20];

@@ -1,8 +1,8 @@
 #ifndef SYNTAX_SYNTAX_H
 #define SYNTAX_SYNTAX_H
 
-#include"lex\lexical.h"
-#include"syntax\treenode.h"
+#include"lex/lexical.h"
+#include"syntax/treenode.h"
 #include<unordered_set>
 #include<vector>
 

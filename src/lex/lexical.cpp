@@ -1,10 +1,10 @@
-#include"lex\lexical.h"
+#include "lex/lexical.h"
 #include"exceptions.h"
 
 using namespace std;
 
 
-Lex::Lex(string fileName) : fin(fileName), cur(' '), line(1), offset(0) {
+Lex::Lex(string fileName) throw(IOException): fin(fileName), cur(' '), line(1), offset(0) {
     if (!fin.is_open()) {
         throw IOException(fileName);
     }
@@ -14,7 +14,7 @@ Lex::~Lex() {
     fin.close();
 }
 
-Token Lex::getNextToken(void) {
+Token Lex::getNextToken(void) throw(Exception) {
     //return Token();
     if (slipping()) { // 此时cur是一个有效值
         if (cur >= '0' && cur < '9') { // 这是一个数字
@@ -193,6 +193,8 @@ bool Lex::slipping() {
             ++offset;
         } else if (cur == '\t') {
             offset += 4;
+        } else if (cur == '\r') {
+            offset = -1;
         } else if (cur == '\n') {
             ++line;
             offset = -1;

@@ -3,8 +3,8 @@
 
 
 #include<list>
-#include"lex\lexical.h"
-#include"lex\token.h"
+#include"lex/lexical.h"
+#include"lex/token.h"
 
 
 using namespace std;

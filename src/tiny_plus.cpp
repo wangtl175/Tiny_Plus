@@ -1,13 +1,16 @@
 #include<iostream>
-#include"lex\lexical.h"
-#include"syntax\syntax.h"
+#include"lex/lexical.h"
+#include"syntax/syntax.h"
 #include"exceptions.h"
 
 using namespace std;
 
 int main() {
+    ofstream fout("hello.txt");
+    fout << "hello,world" << endl;
+    fout.close();
     try {
-        Lex lex("D:\\vs2019\\compliers\\Tiny_Plus\\src\\a.txt");
+        Lex lex("/mnt/d/vs2019/compliers/Tiny_Plus/src/b.txt");
         Syntax syntax(&lex);
         syntax.program();
         syntax.display();

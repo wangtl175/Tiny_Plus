@@ -1,4 +1,4 @@
-#include"syntax\syntax.h"
+#include "syntax/syntax.h"
 #include"exceptions.h"
 #include<iostream>
 #include<iomanip>
