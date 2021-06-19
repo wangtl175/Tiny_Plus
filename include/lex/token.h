@@ -22,6 +22,7 @@ enum class TokenType {
     KEY_STRING,
     KEY_INT,
     KEY_REAL,
+    KEY_BOOLEN,
     KEY_WHILE,
     KEY_REPEAT,
     KEY_UNTIL,

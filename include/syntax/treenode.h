@@ -53,6 +53,7 @@ enum class NodeType {
     SUB_EXP,              // 减法
     MUL_EXP,              // 乘法
     DIV_EXP,              // 除法
+    OPP_EXP,              // 取相反数
 
     Terminator            // 终止符
 };
@@ -63,9 +64,9 @@ struct TreeNode {
     Token token;
     list<TreeNode *> child;
 
-    const char *getType();
+    const char *getType() const;
 
-    TreeNode(NodeType _type);
+    explicit TreeNode(NodeType _type);
 
     TreeNode(NodeType _type, const Token &t);
 

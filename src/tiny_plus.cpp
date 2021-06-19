@@ -10,10 +10,11 @@ int main() {
     fout << "hello,world" << endl;
     fout.close();
     try {
-        Lex lex("/mnt/d/vs2019/compliers/Tiny_Plus/src/b.txt");
-        Syntax syntax(&lex);
-        syntax.program();
+        Lex lex("/mnt/d/vs2019/compliers/Tiny_Plus/src/a.txt");
+        Syntax syntax(&lex, "out.txt");
+        syntax.run();
         syntax.display();
+        syntax.writeCode();
         /*while (true) {
             Token t = lex.getNextToken();
             if (t.type == TokenType::END) {

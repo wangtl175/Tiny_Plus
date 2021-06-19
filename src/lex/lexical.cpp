@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Lex::Lex(string fileName) throw(IOException): fin(fileName), cur(' '), line(1), offset(0) {
+Lex::Lex(const string &fileName) throw(IOException): fin(fileName), cur(' '), line(1), offset(0) {
     if (!fin.is_open()) {
         throw IOException(fileName);
     }
@@ -14,7 +14,7 @@ Lex::~Lex() {
     fin.close();
 }
 
-Token Lex::getNextToken(void) throw(Exception) {
+Token Lex::getNextToken() throw(Exception) {
     //return Token();
     if (slipping()) { // 此时cur是一个有效值
         if (cur >= '0' && cur < '9') { // 这是一个数字
@@ -109,14 +109,16 @@ Token Lex::getSym() {
                 return Token(TokenType::SYM_NEQU, sym, line, o);
             }
         }
-    } else if ((sym[0] == '<' || sym[0] == '>') && (next == '=')) {
+    } else if ((sym[0] == '<' || sym[0] == '>' || sym[0] == '=') && (next == '=')) {
         sym.push_back(next);
         fin.get(cur);
         ++offset;
         if (sym[0] == '<') {
             return Token(TokenType::SYM_LEQ, sym, line, o);
-        } else {
+        } else if (sym[0] == '>') {
             return Token(TokenType::SYM_GEQ, sym, line, o);
+        } else {
+            return Token(TokenType::SYM_EQU, sym, line, o);
         }
     }
     switch (sym[0]) {

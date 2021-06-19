@@ -1,6 +1,6 @@
 #include"syntax/treenode.h"
 
-const char *TreeNode::getType() {
+const char *TreeNode::getType() const {
     switch (type) {
         case NodeType::Program:
             return "Program";

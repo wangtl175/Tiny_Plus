@@ -1,4 +1,4 @@
-/** this is a comment line in the sample program **/
+/** this is a comment line in the sample run **/
 INT f2(INT x, INT y ) 
 BEGIN 
 	INT z := 0;
@@ -15,11 +15,13 @@ BEGIN
 	INT y;
 	READ(y, "A42.input");
 	INT z;
-	IF (x<=2 AND y>= 4)
+	IF (x<=2 OR x==3)
 	BEGIN
 		z := f2(x+2,y-4);
 	END
 	ELSE
 		z := f2(x,y) + f2(y,x);
-	WRITE (z, "A4.output"); 
+	WRITE (z, "A4.output");
+	z := x==y OR x>y;
+	z := 123 OR x>y;
 END
