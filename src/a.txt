@@ -2,7 +2,7 @@
 INT f2(INT x, INT y ) 
 BEGIN 
 	INT z := 0;
-	WHILE ((z <= x*x - y*y))
+	WHILE ((z <= x*x - y*y AND 4 > 3))
 	BEGIN
 		z := z + 1;
 	END
@@ -23,5 +23,5 @@ BEGIN
 		z := f2(x,y) + f2(y,x);
 	WRITE (z, "A4.output");
 	z := x==y OR x>y;
-	z := 123 OR x>y;
+	z := 123 AND x>y;
 END

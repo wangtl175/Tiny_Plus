@@ -112,6 +112,7 @@ TreeNode *Syntax::MethodDecl(vector<string> &code, unordered_map<string, Symbol>
     }
     code.emplace_back(funName + ":");
     node->child.emplace_back(Block(code, methodSym, offset));
+    code.emplace_back("ret");
     return node.release();
 }
 
@@ -282,7 +283,6 @@ TreeNode *Syntax::ReturnStmt(vector<string> &code, unordered_map<string, Symbol>
     node->child.emplace_back(Expression(code, symtable, t, false));
     Semicolon();
     code.emplace_back("%ax = " + t);
-    code.emplace_back("ret");
     return node.release();
 }
 
@@ -524,14 +524,15 @@ TreeNode *Syntax::BoolTerm(vector<string> &code, unordered_map<string, Symbol> &
                 res = t1;
             }
             // 不管t2是不是变量
-            newCodes.emplace_back(l1 + ": " + res + " = " + t2);
+            newCodes.emplace_back(res + " = " + t2);
             newCodes.emplace_back(l2 + ":");
-        } else {  // 此时newCodes最后两行代码还没完整
-            newCodes.front() = l1 + ": " + newCodes.front();
-            newCodes.back() = l2 + ": " + newCodes.back();  // newCodes.back() 是 goto _
+        } else {
+            newCodes.back() = l2 + ": " + newCodes.back(); // newCodes.back() 是 goto _
+            // 此时是l2: goto _
         }
         code.emplace_back("if " + t1 + " goto " + l1);
         code.emplace_back("goto " + l2);
+        newCodes.front() = l1 + ": " + newCodes.front();
         node->child.emplace_back(left.release());
         node->child.emplace_back(right.release());
         code.insert(code.end(), newCodes.begin(), newCodes.end());
@@ -570,7 +571,8 @@ TreeNode *Syntax::BoolFactor(vector<string> &code, unordered_map<string, Symbol>
         curToken = tmpToken;
         if (curToken->type == TokenType::SYM_LP) {
             ++curToken;
-            left.reset(BoolFactor(code, symtable, t1));  // 递归分析
+            // left.reset(BoolFactor(code, symtable, t1));  // 递归分析
+            left.reset(Expression(code, symtable, t1, false));
             if (curToken->type != TokenType::SYM_RP) {
                 throw Exception("')' expected", curToken->row, curToken->column);
             }
@@ -738,7 +740,8 @@ TreeNode *Syntax::PrimaryExpr(vector<string> &code, unordered_map<string, Symbol
         }
         if (curToken->type != TokenType::SYM_RP) {  // 可能是比较符号，应该回溯
             unordered_set<TokenType> compSet = {TokenType::SYM_EQU, TokenType::SYM_GEQ, TokenType::SYM_LEQ,
-                                                TokenType::SYM_GT, TokenType::SYM_LT, TokenType::SYM_NEQU};
+                                                TokenType::SYM_GT, TokenType::SYM_LT, TokenType::SYM_NEQU,
+                                                TokenType::KEY_AND, TokenType::KEY_OR};
             if (match(compSet)) {  // 回溯
                 node.reset();
                 return nullptr;
@@ -785,11 +788,8 @@ TreeNode *Syntax::PrimaryExpr(vector<string> &code, unordered_map<string, Symbol
     return node.release();
 }
 
-// ActualParams应该不用返回值res, 只需要生成代码即可
-// 或者ActualParams有返回值res，每次调用就分析一个参数并且生成代码
+// ActualParams有返回值res，每次调用就分析一个参数并且生成代码
 TreeNode *Syntax::ActualParams(vector<string> &code, unordered_map<string, Symbol> &symtable, string &res) {
-//    unique_ptr<TreeNode> node(new TreeNode(NodeType::ActualParams));
-//    node->child.emplace_back(Expression());
     unique_ptr<TreeNode> node(Expression(code, symtable, res, false));
     if (!node) {
         throw Exception("invalid parameter", curToken->row, curToken->column);
@@ -797,11 +797,6 @@ TreeNode *Syntax::ActualParams(vector<string> &code, unordered_map<string, Symbo
     if (curToken->type == TokenType::SYM_COMMA) {
         ++curToken;
     }
-//    while (curToken->type == TokenType::SYM_COMMA) {
-//        node->child.emplace_back(new TreeNode(NodeType::Terminator, *curToken));
-//        ++curToken;
-//        node->child.emplace_back(Expression());
-//    }
     return node.release();
 }
 

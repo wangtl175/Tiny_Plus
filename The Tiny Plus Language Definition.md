@@ -44,7 +44,7 @@ Here is the definition for the Tiny language.
 
 ```
 Program -> MethodDecl MethodDecl* 
-Type -> INT | REAL |STRING 
+Type -> INT | REAL |STRING | BOOLEAN
 MethodDecl -> Type Id '(' FormalParams ')' Block | Type MAIN '(' FormalParams ')' Block
 FormalParams -> FormalParam ( ',' FormalParam )* | e
 FormalParam -> Type Id
@@ -103,6 +103,7 @@ BoolTerm -> BoolFactor (AND BoolFactor)*
 BoolFactor -> ArithmeticExpression ( ('<' | '>' | '<=' | '>=' | '==')
               ArithmeticExpression )
             | StringExpression ( ('<' | '>' | '<=' | '>=' | '==') StringExpression )
+            | (BoolExpression)
 
 StringExpression -> string
 ```
